@@ -1,0 +1,79 @@
+body {
+  background: linear-gradient(135deg, #0f2027 0%, #2c5364 100%);
+  color: #fff;
+  min-height: 100vh;
+  font-family: 'Inter', 'Space Grotesk', sans-serif;
+  /* Subtle star field */
+  background-image: 
+    radial-gradient(ellipse at 20% 20%, rgba(255,255,255,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse at 80% 60%, rgba(255,255,255,0.06) 0%, transparent 80%),
+    linear-gradient(135deg, #0f2027 0%, #2c5364 100%);
+}
+
+:root {
+  --accent-neon: #b089ee;
+  --accent-cyan: #00ffe7;
+  --accent-purple: #a259ff;
+  --accent-blue: #00c3ff;
+}
+
+.bg-space {
+  background: linear-gradient(135deg, #0f2027 0%, #2c5364 100%);
+  position: relative;
+}
+
+.bg-space::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url('/assets/lineicons/regular-free-icon-svgs/nasa.svg');
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.text-neon {
+  color: var(--accent-neon);
+  text-shadow: 0 0 8px var(--accent-neon), 0 0 16px var(--accent-neon);
+}
+
+.btn-neon {
+  background: var(--accent-neon);
+  color: #fff;
+  box-shadow: 0 0 16px var(--accent-neon), 0 0 32px var(--accent-neon);
+  transition: box-shadow 0.3s, background 0.3s;
+}
+
+.btn-neon:hover {
+  background: var(--accent-cyan);
+  box-shadow: 0 0 32px var(--accent-cyan), 0 0 64px var(--accent-cyan);
+}
+
+/* Animation utilities for Hero section */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fadeIn {
+  animation: fadeIn 1.5s ease 0.5s both;
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 16px var(--accent-neon); }
+  to { box-shadow: 0 0 32px var(--accent-cyan); }
+}
+.animate-glow {
+  animation: glow 2s infinite alternate;
+}
+
+.drop-shadow-neon {
+  filter: drop-shadow(0 0 16px var(--accent-neon));
+} 
