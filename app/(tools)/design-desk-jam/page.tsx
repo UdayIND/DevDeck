@@ -286,6 +286,26 @@ function DesignDeskJamInner() {
 }
 
 export default function DesignDeskJam() {
+  // Check if Liveblocks environment variable is available
+  if (!process.env.NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black text-white">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-red-500 mb-4">Configuration Error</h1>
+          <p className="text-gray-300 mb-4">
+            Liveblocks environment variable is not configured.
+          </p>
+          <p className="text-sm text-gray-400">
+            Please set NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY in your environment variables.
+          </p>
+          <Link href="/" className="btn-neon px-4 py-2 text-sm mt-4 inline-block">
+            ← Back to Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <LiveblocksProvider>
       <DesignDeskJamInner />

@@ -1,15 +1,18 @@
 import { LiveMap, createClient } from "@liveblocks/client";
 import { createRoomContext } from "@liveblocks/react";
 
-// Ensure publicApiKey is properly retrieved from the environment
-if (!process.env.NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY) {
+// Get the public key from environment variable with fallback for build time
+const publicApiKey = process.env.NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY;
+
+// Only throw error in browser/runtime, not during build
+if (typeof window !== 'undefined' && !publicApiKey) {
   throw new Error("NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY is not defined.");
 }
 
 // Create the Liveblocks client using the public key from the environment
 const client = createClient({
   throttle: 16, // Control the frequency of updates.
-  publicApiKey: process.env.NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY, // Get the public key from environment variable
+  publicApiKey: publicApiKey || "pk_dev_placeholder", // Fallback for build time
   
   // Uncomment if using a custom auth backend
   // authEndpoint: "/api/liveblocks-auth",
