@@ -3,15 +3,16 @@ import React, { useEffect, useState } from "react";
 import { Button, Link } from "@nextui-org/react";
 import Footer from "@/components/ui/footer";
 import { useTheme } from "next-themes";
-import NavbarComponent from "../front-navbar";
+import NavbarComponent from "@/components/front-navbar";
+import { useUser } from "@clerk/nextjs";
 
 export default function SupportUs() {
   const [darkMode, setDarkMode] = useState(false);
   const { systemTheme, theme } = useTheme();
   const currentTheme = theme === "dark" ? systemTheme : theme;
 
+  const { isSignedIn } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false); // Track copy success state
 
   useEffect(() => {
@@ -36,7 +37,6 @@ export default function SupportUs() {
   return (
     <>
       <NavbarComponent
-        isLoggedIn={isLoggedIn}
         setIsMenuOpen={setIsMenuOpen}
         isMenuOpen={isMenuOpen}
       />

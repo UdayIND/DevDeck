@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import NavbarComponent from './front-navbar';
+import NavbarComponent from '@/components/front-navbar';
+import { useUser } from "@clerk/nextjs";
 
 const NotFound = () => {
+  const { isSignedIn } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const { systemTheme, theme } = useTheme();
   const currentTheme = theme === 'dark' || (!theme && systemTheme === 'dark') ? 'dark' : 'light';
@@ -20,7 +21,6 @@ const NotFound = () => {
   return (
     <>
       <NavbarComponent
-        isLoggedIn={isLoggedIn}
         setIsMenuOpen={setIsMenuOpen}
         isMenuOpen={isMenuOpen}
       />

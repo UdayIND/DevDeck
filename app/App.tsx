@@ -12,41 +12,27 @@ import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { ImDeviantart, ImDownload, ImHammer, ImNewspaper } from "react-icons/im";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import BackToTop from "../src/components/BackToTop/BackToTop";
-import Preloader from "../src/components/Preloader";
-import Progressbar from "../src/components/progressbar/progressbar";
-import Review from '../src/components/ui/review';
-import NavbarComponent from "./front-navbar";
-import ThemeProvider from "./provider";
-import { useUser } from "@/context/UserContext";
-import Hero from "../src/components/landing/Hero";
-
+import BackToTop from "@/components/BackToTop/BackToTop";
+import Preloader from "@/components/Preloader";
+import Progressbar from "@/components/progressbar/progressbar";
+import Review from '@/components/ui/review';
+import NavbarComponent from "@/components/front-navbar";
+import ThemeProvider from "@/lib/provider";
+import Hero from "@/components/landing/Hero";
+import { useUser } from "@clerk/nextjs";
+import { 
+  Rocket, 
+  Users, 
+  Zap, 
+  Shield, 
+  Star, 
+  ArrowRight 
+} from "lucide-react";
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
- 
-  const icons = {
-    chevron: <ChevronDown fill="currentColor" size={16} className="some-class-name" height={undefined} width={undefined} />,
-    hammer: <ImHammer />,
-    dev: <ImDeviantart />,
-    slide: <ImNewspaper />,
-    download: <ImDownload />,
-  };
-
-  const menuItems = [
-    "Profile",
-    "Dashboard",
-    "WorkSpace",
-    "System",
-    "My Settings",
-    "Help & Feedback",
-    "Log Out",
-  ];
+  const { user } = useUser();
 
   const { systemTheme, theme } = useTheme();
   useEffect(() => {
@@ -56,37 +42,116 @@ export default function App() {
   return (
     <ThemeProvider>
       <Progressbar />
-      <NavbarComponent isLoggedIn={isLoggedIn} setIsMenuOpen={setIsMenuOpen} isMenuOpen={isMenuOpen} />
+      <NavbarComponent isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
       <Preloader />
 
       <div className={`min-h-screen ${darkMode ? "bg-black text-white" : "bg-gradient-to-r from-gray-300 via-white to-gray-200 text-black"} font-sans`}>
         <Hero />
-        <div className={`py-0 hidden md:block md:py-4 ${darkMode ? "bg-black" : "bg-gradient-to-r from-gray-300 via-white to-gray-200 text-black"}`}>
-          <div className="flex justify-around items-center">
-            {menuItems.map((item, index) => (
-              <Link key={index} className="text-lg" href={`/${item.toLowerCase().replace(" ", "-")}`}>
-                {item}
-              </Link>
-            ))}
-          </div>
-        </div>
 
         <div className="py-20 mx-10">
-          <div className="w-auto flex justify-center font-bold bg-gradient-to-r from-red-500 to-yellow-500 bg-clip-text text-transparent text-6xl m-4 pb-14">Features</div>
+          <div className="w-auto flex justify-center font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent text-6xl m-4 pb-14">
+            Real Features, Real Collaboration
+          </div>
           <div className="max-w-8xl max-h-full mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
             {[
-              { imgSrc: "five.webp", text: "Live Collaboration", onClick: () => toast("Live Collaboration notify me") },
-              { imgSrc: "four.webp", text: "Real-Time Updates", onClick: () => toast("Real-Time updates notify me") },
-              { imgSrc: "two.webp", text: "Text Addition", onClick: () => toast("Text addition notify me") },
+              { 
+                imgSrc: "five.webp", 
+                text: "Collaborative Whiteboard", 
+                description: "Real-time design collaboration with drawing tools, shapes, and live chat",
+                onClick: () => window.location.href = "/design-desk-jam"
+              },
+              { 
+                imgSrc: "four.webp", 
+                text: "Interactive Presentations", 
+                description: "Create and present slides with live collaboration and real-time editing",
+                onClick: () => window.location.href = "/design-desk-slides"
+              },
+              { 
+                imgSrc: "two.webp", 
+                text: "DevHub Projects", 
+                description: "Manage development projects with real team collaboration",
+                onClick: () => window.location.href = "/devhub"
+              },
             ].map((feature, i) => (
-              <Card key={i} isFooterBlurred radius="lg" className="border-none shadow-2xl rounded-lg text-center bg-none">
+              <Card key={i} isFooterBlurred radius="lg" className="border-none shadow-2xl rounded-lg text-center bg-none hover:scale-105 transition-transform duration-300 cursor-pointer">
                 <Image alt={feature.text} className="object-cover w-full h-full" height={370} src={feature.imgSrc} width={500} />
-                <CardFooter className="absolute bottom-1 w-[93%] mb-2 right-2 py-1 shadow-small mr-2 z-10 transition-all duration-300 ease-in-out bg-white/10 rounded-xl hover:bg-black/50 hover:scale-105 text-white font-medium">
-                  <p>{feature.text}</p>
-                  <Button onClick={feature.onClick} variant="flat" color="default" radius="lg" size="sm">Notify Me</Button>
+                <CardFooter className="absolute bottom-1 w-[93%] mb-2 right-2 py-3 shadow-small mr-2 z-10 transition-all duration-300 ease-in-out bg-white/10 rounded-xl hover:bg-black/50 text-white font-medium">
+                  <div className="w-full text-left">
+                    <h3 className="text-lg font-bold mb-1">{feature.text}</h3>
+                    <p className="text-sm opacity-90 mb-2">{feature.description}</p>
+                    <Button onClick={feature.onClick} variant="flat" color="primary" radius="lg" size="sm" className="w-full">
+                      Try Now
+                    </Button>
+                  </div>
                 </CardFooter>
-                <ToastContainer />
               </Card>
+            ))}
+          </div>
+
+          {/* Production Features Grid */}
+          <div className="max-w-8xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
+            {[
+              {
+                icon: "🎨",
+                title: "Real-time Drawing",
+                description: "Multiple users can draw and edit simultaneously with live synchronization",
+                link: "/design-desk-jam"
+              },
+              {
+                icon: "💬",
+                title: "Live Team Chat",
+                description: "Built-in chat system with real-time messaging across all tools",
+                link: "/design-desk-jam"
+              },
+              {
+                icon: "👥",
+                title: "Live User Presence",
+                description: "See team members online with live cursor tracking and presence indicators",
+                link: "/workspace"
+              },
+              {
+                icon: "📊",
+                title: "Project Management",
+                description: "Comprehensive project organization with real collaboration features",
+                link: "/devhub"
+              },
+              {
+                icon: "🔐",
+                title: "Secure Authentication",
+                description: "Enterprise-grade security with Clerk authentication platform",
+                link: user ? "/dashboard" : "/"
+              },
+              {
+                icon: "⚡",
+                title: "High Performance",
+                description: "Optimized for real-time collaboration with sub-second response times",
+                link: "/"
+              },
+              {
+                icon: "📱",
+                title: "Responsive Design",
+                description: "Full functionality across desktop, tablet, and mobile devices",
+                link: "/"
+              },
+              {
+                icon: "🚀",
+                title: "Production Ready",
+                description: "Deployed and ready for real-world team collaboration",
+                link: user ? "/workspace" : "/"
+              }
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                className={`p-6 rounded-xl border-2 ${darkMode ? 'bg-gray-900 border-gray-700 hover:border-cyan-400' : 'bg-white border-gray-200 hover:border-blue-400'} transition-all duration-300 hover:shadow-lg cursor-pointer`}
+                whileHover={{ scale: 1.05 }}
+                onClick={() => window.location.href = item.link}
+              >
+                <div className="text-4xl mb-4">{item.icon}</div>
+                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                  {item.description}
+                </p>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -94,30 +159,30 @@ export default function App() {
         <div className={`${darkMode ? "bg-black text-white" : "bg-gradient-to-r from-gray-300 via-white to-gray-200 text-black"} py-20 px-10 my-40`}>
           <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center">
             <div className="flex items-center">
-              <div className="text-yellow-700 text-9xl font-extrabold mr-6">&#8220;</div>
+              <div className="text-cyan-400 text-9xl font-extrabold mr-6">&#8220;</div>
               <div className="text-3xl lg:text-5xl font-medium leading-snug max-w-lg">
-                Nearly everything that designers and developers need is available in DesignDesk.
+                A complete collaboration platform for modern development teams.
               </div>
             </div>
             <div className="flex items-center mt-10 lg:mt-0">
               <div className="text-right mr-4">
-                <div className="text-2xl font-semibold">GitHub</div>
+                <div className="text-2xl font-semibold">DevDeck</div>
                 <div className="flex items-center mt-2">
-                  <div className="h-6 w-6 rounded-full bg-gradient-to-r from-green-400 to-yellow-400 p-8 m-3"></div>
+                  <div className="h-6 w-6 rounded-full bg-gradient-to-r from-cyan-400 to-purple-500 p-8 m-3"></div>
                   <div>
-                    <div className="text-lg text-gray-600">Diana Mounter</div>
-                    <div className="text-lg text-gray-600">Head of Design</div>
+                    <div className="text-lg text-gray-600">Real Collaboration</div>
+                    <div className="text-lg text-gray-600">Real Results</div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="w-auto flex justify-center font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent text-6xl m-4 pb-8">Testimonials</div>
-        <Review/>
+
+        <Review />
+        <BackToTop />
         <Footer />
       </div>
-      <BackToTop />
     </ThemeProvider>
   );
 }

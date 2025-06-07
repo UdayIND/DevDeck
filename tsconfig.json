@@ -25,7 +25,7 @@
     ],
     "paths": {
       "@/*": [
-        "src/*"
+        "./*"
       ]
     },
     "baseUrl": "."
@@ -34,9 +34,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "app/api/liveblocks-auth/route.js"
-, "app/front-navbar.tsx", "app/api/verifyotp", "app/api/resetpassword"  ],
+    ".next/types/**/*.ts"
+  ],
   "exclude": [
     "node_modules"
   ]
